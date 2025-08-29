@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Glow Up App</title>
+  <style>
+    :root { --bg:#0b1220; --card:#111a2b; --text:#e5e7eb; --muted:#94a3b8; --accent:#22c55e; --accent2:#60a5fa; --danger:#ef4444; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    header{padding:16px;border-bottom:1px solid #1f2937}
+    h1{margin:0;font-size:22px}
+    #dateLine{color:var(--muted);margin-top:4px;text-transform:capitalize}
+    .tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:8px;position:sticky;top:0;background:var(--bg);z-index:5}
+    .tabs button{padding:10px;border-radius:10px;border:1px solid #1f2937;color:var(--text);background:var(--card)}
+    .tabs button.active{outline:2px solid var(--accent2)}
+    main{padding:12px}
+    .tab{display:none}.tab.active{display:block}
+    .daytype{margin:8px 0 12px;color:var(--muted)}
+    .progress{position:relative;height:14px;background:#0f172a;border:1px solid #1f2937;border-radius:999px;margin:8px 0 14px}
+    #progressBar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),#16a34a);border-radius:999px;transition:width .2s}
+    #progressText{position:absolute;right:8px;top:-24px;font-size:12px;color:var(--muted)}
+    #tasks{display:grid;gap:8px}
+    .task{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid #1f2937;border-radius:12px;padding:12px}
+    .task .label{font-weight:600}
+    .state{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid #334155;color:var(--muted)}
+    .state.s0{background:rgba(148,163,184,.08)}
+    .state.s1{background:rgba(96,165,250,.15);color:#bfdbfe;border-color:#60a5fa}
+    .state.s2{background:rgba(34,197,94,.18);color:#bbf7d0;border-color:#22c55e}
+    .actions{display:flex;gap:10px;margin:12px 0;flex-wrap:wrap}
+    button{background:var(--accent2);color:#001;border:none;padding:10px 14px;border-radius:10px;font-weight:700}
+    button.ghost{background:transparent;color:var(--muted);border:1px solid #1f2937}
+    .importBtn{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--muted);border:1px dashed #334155;padding:10px 14px;border-radius:10px;cursor:pointer}
+    .card{background:var(--card);border:1px solid #1f2937;border-radius:12px;padding:12px;margin:12px 0}
+    .checkbox{display:flex;align-items:center;gap:8px;margin-top:8px}
+    textarea,input[type="date"],input[type="number"],select{width:100%;padding:10px;border-radius:10px;border:1px solid #334155;background:#0f172a;color:var(--text)}
+    .socialTask{margin-top:10px;font-weight:600}
+    .grid-7{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+    .grid-7 .card{margin:0}
+    .hint{color:var(--muted);font-size:12px;margin-top:10px}
+    footer{text-align:center;color:var(--muted);font-size:12px;padding:12px 0 20px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Glow Up</h1>
+    <div id="dateLine"></div>
+  </header>
+
+  <nav class="tabs">
+    <button data-tab="today" class="active">Dziś</button>
+    <button data-tab="social">Social30</button>
+    <button data-tab="review">Przeglądy</button>
+    <button data-tab="settings">Ustawienia</button>
+  </nav>
+
+  <main>
+    <!-- TODAY -->
+    <section id="today" class="tab active">
+      <div class="daytype"><span>Typ dnia:</span> <strong id="dayTypeLabel">—</strong></div>
+      <div class="progress"><div id="progressBar"></div><span id="progressText">0%</span></div>
+      <div id="tasks"></div>
+      <div class="actions">
+        <button id="resetDay" class="ghost">Reset dnia</button>
+        <button id="exportData">Eksport danych</button>
+        <label class="importBtn">Import danych<input type="file" id="importData" accept="application/json" hidden /></label>
+      </div>
+      <p class="hint">Tip: stuknij zadanie, aby przełączać: brak → 1/3 → 100%.</p>
+    </section>
+
+    <!-- SOCIAL30 -->
+    <section id="social" class="tab">
+      <h2>Plan Social30</h2>
+      <div class="card">
+        <label>Data startu: <input type="date" id="socialStart" /></label>
+        <div class="socialBox">
+          <div>Dzisiejszy dzień wyzwania: <strong id="socialDay">—</strong>/30</div>
+          <div id="socialTask" class="socialTask"></div>
+          <label class="checkbox"><input type="checkbox" id="socialDone" /> Odhacz dzisiejsze zadanie</label>
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEW -->
+    <section id="review" class="tab">
+      <h2>Przegląd tygodniowy</h2>
+      <div class="card">
+        <label>2 wygrane:<textarea id="weekWins" rows="2" placeholder="Co poszło dobrze?"></textarea></label>
+        <label>1 lekcja:<textarea id="weekLesson" rows="2" placeholder="Czego się nauczyłeś?"></textarea></label>
+        <label>Priorytety:<textarea id="weekPriorities" rows="2" placeholder="Np. pilnuję angielskiego rano."></textarea></label>
+        <label>Sloty relacyjne (0–2):<input type="number" id="weekSocialSlots" min="0" max="2" /></label>
+        <button id="saveWeek">Zapisz przegląd tygodnia</button>
+      </div>
+      <h2>Przegląd miesięczny</h2>
+      <div class="card">
+        <label>Podsumowanie miesiąca:<textarea id="monthNotes" rows="4" placeholder="Trening, looksmax, nauka, relacje — co poprawić?"></textarea></label>
+        <button id="saveMonth">Zapisz przegląd miesiąca</button>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="settings" class="tab">
+      <h2>Ustawienia dnia tygodnia</h2>
+      <div class="grid-7" id="dayTypeMap"></div>
+      <h2>Opcje</h2>
+      <div class="card">
+        <label>Waga trybu 1:3 (0.2–0.5): <input type="number" step="0.01" min="0.2" max="0.5" id="partialWeight" /></label>
+        <button id="saveSettings">Zapisz ustawienia</button>
+      </div>
+      <div class="card"><button id="clearAll" class="danger">Wyzeruj wszystko</button></div>
+      <p class="hint">Możesz dodać stronę do ekranu głównego (Android/iOS). Dane zapisują się w telefonie (localStorage).</p>
+    </section>
+  </main>
+
+  <footer>Autosave • v1‑file</footer>
+
+  <script>
+    // Brak service workera – najprostsza wersja.
+    const store={get:(k,d=null)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch{return d}},set:(k,v)=>localStorage.setItem(k,JSON.stringify(v)),del:(k)=>localStorage.removeItem(k)};
+    const DEFAULTS={dayTypes:{0:'looksmax',1:'boks',2:'boks',3:'looksmax',4:'czwartek',5:'boks',6:'looksmax'},partialWeight:0.33,socialStart:new Date().toISOString().slice(0,10)};
+    const SOCIAL30=["D1: Obserwuj rozmowy wokół – kto przyciąga uwagę? Zanotuj 3 rzeczy.","D2: 3 świadome uśmiechy do nieznajomych.","D3: 3× reset postawy w grupie.","D4: 10 min w ciszy wśród ludzi. Obserwuj – nie oceniaj.","D5: W rozmowie 1:1 powiedz coś szczerze o sobie.","D6: Nagraj krótki filmik (np. tłumaczysz planka). Oceń ton i mowę ciała.","D7: Spacer w tłoczne miejsce. Obserwuj ludzi jak w grze.","D8: Zapytaj nieznajomego o godzinę/drogę/sklep – z kontaktem wzrokowym.","D9: Wpleć humor/sarkazm i zobacz reakcję.","D10: 3 krótkie pogawędki (po ~30 s).","D11: Nagraj głos z zabawną historią – posłuchaj tonu.","D12: Rozmowa od wspólnego tematu (miejsce/pogoda/szkoła).","D13: Przejmij energię luźnej osoby przez 15 min.","D14: Spis 3 rzeczy, które wyszły w tym tygodniu.","D15: W grupie odezwij się pierwszy (pytanie/żart).","D16: Luźna rozmowa o czymś abstrakcyjnym.","D17: Gdy się chowasz – zrób 1 wejście do rozmowy.","D18: Powiedz szczery, konkretny komplement.","D19: Idź w średnio komfortowe miejsce i ćwicz obecność.","D20: Nagraj udawaną rozmowę z grupą (gesty/uśmiech).","D21: Dziennik: 2–3 automatyczne myśli w grupie.","D22: Kontakt wzrokowy z dziewczyną min. 3 sekundy.","D23: Zacznij rozmowę z dziewczyną (proste pytanie).","D24: Opowiedz coś zabawnego/z życia – bez oceniania.","D25: Ćwicz otwartą mowę ciała (ramiona luźno, uśmiech).","D26: Użyj jej imienia min. 2 razy.","D27: Zrób 1 spontaniczny ruch społeczny.","D28: Co mnie blokuje? Przełam 1 rzecz dziś.","D29: Po rozmowie – 3 rzeczy, które zrobiłeś dobrze.","D30: Zaproponuj wspólne działanie. Bez spiny."];
+
+    const els={tabs:document.querySelectorAll('.tabs button'),tabsSections:document.querySelectorAll('.tab'),dateLine:document.getElementById('dateLine'),dayTypeLabel:document.getElementById('dayTypeLabel'),progressBar:document.getElementById('progressBar'),progressText:document.getElementById('progressText'),tasks:document.getElementById('tasks'),resetDay:document.getElementById('resetDay'),exportData:document.getElementById('exportData'),importData:document.getElementById('importData'),socialStart:document.getElementById('socialStart'),socialDay:document.getElementById('socialDay'),socialTask:document.getElementById('socialTask'),socialDone:document.getElementById('socialDone'),weekWins:document.getElementById('weekWins'),weekLesson:document.getElementById('weekLesson'),weekPriorities:document.getElementById('weekPriorities'),weekSocialSlots:document.getElementById('weekSocialSlots'),saveWeek:document.getElementById('saveWeek'),monthNotes:document.getElementById('monthNotes'),saveMonth:document.getElementById('saveMonth'),dayTypeMap:document.getElementById('dayTypeMap'),partialWeight:document.getElementById('partialWeight'),saveSettings:document.getElementById('saveSettings'),clearAll:document.getElementById('clearAll')};
+
+    els.tabs.forEach(btn=>{btn.addEventListener('click',()=>{els.tabs.forEach(b=>b.classList.remove('active'));els.tabsSections.forEach(s=>s.classList.remove('active'));btn.classList.add('active');document.getElementById(btn.dataset.tab).classList.add('active');if(btn.dataset.tab==='today')renderToday();if(btn.dataset.tab==='social')renderSocial();if(btn.dataset.tab==='review')renderReview();if(btn.dataset.tab==='settings')renderSettings();});});
+
+    const fmtDate=d=>d.toLocaleDateString('pl-PL',{weekday:'long',day:'2-digit',month:'2-digit'});
+    const keyForDate=d=>'day-'+d.toISOString().slice(0,10);
+    const keyWeek=d=>{const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const dayNum=t.getUTCDay()||7;t.setUTCDate(t.getUTCDate()+4-dayNum);const yearStart=new Date(Date.UTC(t.getUTCFullYear(),0,1));const weekNo=Math.ceil((((t-yearStart)/86400000)+1)/7);return `week-${t.getUTCFullYear()}-${weekNo}`};
+    const keyMonth=d=>`month-${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+
+    function getSettings(){const s=store.get('settings',{});return{dayTypes:{...DEFAULTS.dayTypes,...(s.dayTypes||{})},partialWeight:s.partialWeight??DEFAULTS.partialWeight,socialStart:s.socialStart||DEFAULTS.socialStart};}
+    function saveSettings(s){store.set('settings',s);}
+
+    function getDayType(date){const s=getSettings();const dow=date.getDay();return s.dayTypes[dow]||'looksmax';}
+    const TASKS_BY_TYPE={
+      boks:["Poranna","Boks","Niemiecki","Angielski","Matma","Chemia","Polski","Instrument","Woda 2–3L","Sen 8h","No PMO","Dieta 3+1","Wieczorny"],
+      looksmax:["Poranna","Looksmax","Niemiecki","Angielski","Matma","Chemia","Biologia","Polski","Instrument","Czytanie","Woda 2–3L","Sen 8h","No PMO","Dieta 3+1","Wieczorny"],
+      czwartek:["Poranna","Looksmax","Niemiecki","Angielski","Matma","Chemia","Biologia","Polski","Instrument","Czytanie","Woda 2–3L","Sen 8h","No PMO","Dieta 3+1","Wieczorny"]
+    };
+
+    function getDayData(date){const key=keyForDate(date);let data=store.get(key);if(!data){const type=getDayType(date);const tasks={};TASKS_BY_TYPE[type].forEach(t=>tasks[t]=0);data={type,tasks};store.set(key,data);}return data;}
+    function saveDayData(date,data){store.set(keyForDate(date),data);}
+
+    function renderToday(){const today=new Date();els.dateLine.textContent=fmtDate(today);let data=getDayData(today);const currentType=getDayType(today);
+      if(data.type!==currentType){const newTasks={};TASKS_BY_TYPE[currentType].forEach(t=>newTasks[t]=data.tasks[t]??0);data={type:currentType,tasks:newTasks};saveDayData(today,data);}
+      els.dayTypeLabel.textContent=currentType[0].toUpperCase()+currentType.slice(1);
+      els.tasks.innerHTML='';
+      Object.entries(data.tasks).forEach(([name,state])=>{const div=document.createElement('div');div.className='task';
+        const label=document.createElement('div');label.className='label';label.textContent=name;
+        const btn=document.createElement('button');btn.className=`state s${state}`;btn.textContent=state===0?'—':(state===1?'1/3':'100%');
+        btn.addEventListener('click',()=>{data.tasks[name]=(data.tasks[name]+1)%3;saveDayData(today,data);renderToday();});
+        div.appendChild(label);div.appendChild(btn);els.tasks.appendChild(div);
+      });
+      updateProgress(today,data);
+    }
+
+    function updateProgress(date,data){const settings=getSettings();const weights=Object.values(data.tasks).map(s=>s===2?1:(s===1?settings.partialWeight:0));const sum=weights.reduce((a,b)=>a+b,0);const total=weights.length;const pct=Math.round(100*(total?sum/total:0));els.progressBar.style.width=pct+'%';els.progressText.textContent=pct+'%';}
+
+    // Actions
+    els.resetDay.addEventListener('click',()=>{if(!confirm('Zresetować dzisiejsze zadania?'))return;const today=new Date();const type=getDayType(today);const tasks={};TASKS_BY_TYPE[type].forEach(t=>tasks[t]=0);saveDayData(today,{type,tasks});renderToday();});
+    els.exportData.addEventListener('click',()=>{const data={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k.startsWith('day-')||k.startsWith('week-')||k.startsWith('month-')||k==='settings'){data[k]=store.get(k)}}const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='glowup-backup.json';a.click();URL.revokeObjectURL(url);});
+    els.importData.addEventListener('change',e=>{const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const obj=JSON.parse(reader.result);Object.entries(obj).forEach(([k,v])=>store.set(k,v));alert('Zaimportowano dane. Odświeżam.');location.reload();}catch{alert('Błąd importu pliku.');}};reader.readAsText(file);});
+
+    function renderSocial(){const s=getSettings();els.socialStart.value=s.socialStart;const today=new Date();const start=new Date(s.socialStart+'T00:00:00');const diffDays=Math.floor((today-start)/86400000);const dayNum=((diffDays%30)+30)%30+1;els.socialDay.textContent=dayNum;els.socialTask.textContent=SOCIAL30[dayNum-1];const dayData=getDayData(today);els.socialDone.checked=!!dayData.socialDone;els.socialStart.onchange=()=>{const newS=getSettings();newS.socialStart=els.socialStart.value||DEFAULTS.socialStart;saveSettings(newS);renderSocial();};els.socialDone.onchange=()=>{const d=getDayData(today);d.socialDone=els.socialDone.checked;saveDayData(today,d);};}
+
+    function renderReview(){const today=new Date();const wk=keyWeek(today);const mn=keyMonth(today);const w=store.get(wk,{wins:'',lesson:'',priorities:'',slots:0});els.weekWins.value=w.wins||'';els.weekLesson.value=w.lesson||'';els.weekPriorities.value=w.priorities||'';els.weekSocialSlots.value=w.slots||0;const m=store.get(mn,{notes:''});els.monthNotes.value=m.notes||'';els.saveWeek.onclick=()=>{store.set(wk,{wins:els.weekWins.value,lesson:els.weekLesson.value,priorities:els.weekPriorities.value,slots:Number(els.weekSocialSlots.value||0)});alert('Zapisano przegląd tygodnia.')};els.saveMonth.onclick=()=>{store.set(mn,{notes:els.monthNotes.value});alert('Zapisano przegląd miesiąca.')};}
+
+    function renderSettings(){const s=getSettings();els.dayTypeMap.innerHTML='';const names=['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota'];for(let d=0;d<7;d++){const card=document.createElement('div');card.className='card';const label=document.createElement('label');label.textContent=names[d];const sel=document.createElement('select');['boks','looksmax','czwartek'].forEach(t=>{const opt=document.createElement('option');opt.value=t;opt.textContent=t[0].toUpperCase()+t.slice(1);if(s.dayTypes[d]===t)opt.selected=true;sel.appendChild(opt);});sel.onchange=()=>{const set2=getSettings();set2.dayTypes[d]=sel.value;saveSettings(set2);};card.appendChild(label);card.appendChild(sel);els.dayTypeMap.appendChild(card);}els.partialWeight.value=s.partialWeight;els.saveSettings.onclick=()=>{const set2=getSettings();set2.partialWeight=Math.max(0.2,Math.min(0.5,Number(els.partialWeight.value||0.33)));saveSettings(set2);alert('Zapisano.');};els.clearAll.onclick=()=>{if(!confirm('Na pewno wyczyścić wszystkie dane?'))return;localStorage.clear();alert('Wyczyszczono. Odświeżam.');location.reload();};}
+
+    (function init(){document.getElementById('dateLine').textContent=(new Date()).toLocaleDateString('pl-PL',{weekday:'long',day:'2-digit',month:'2-digit'});renderToday();})();
+  </script>
+</body>
+</html>
