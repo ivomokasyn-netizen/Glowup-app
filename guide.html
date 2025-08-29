@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Glow Up – Przewodnik</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="https://via.placeholder.com/192.png?text=GlowUp" />
+  <style>
+    :root { --bg:#0b1220; --card:#111a2b; --text:#e5e7eb; --muted:#94a3b8; --accent:#22c55e; --accent2:#60a5fa; --danger:#ef4444; --warn:#f59e0b; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    a{color:#93c5fd;text-decoration:none} a:hover{text-decoration:underline}
+    header{padding:16px;border-bottom:1px solid #1f2937}
+    h1{margin:0 0 6px;font-size:22px}
+    .muted{color:var(--muted)}
+    .topActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+    .btn{background:var(--accent2);color:#001;border:none;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}
+    .btn.ghost{background:transparent;color:var(--muted);border:1px solid #1f2937}
+    main{padding:12px;max-width:920px;margin:0 auto}
+    .toc{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 16px}
+    .chip{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid #334155;background:#0f172a;color:#bfdbfe}
+    h2{margin:18px 0 10px;font-size:20px}
+    h3{margin:14px 0 8px;font-size:17px}
+    .card{background:var(--card);border:1px solid #1f2937;border-radius:12px;padding:14px;margin:12px 0}
+    ul{margin:8px 0 0 18px}
+    li{margin:4px 0}
+    code{background:#0f172a;border:1px solid #1f2937;border-radius:6px;padding:1px 6px}
+    .grid{display:grid;gap:12px}
+    @media(min-width:740px){ .grid-2{grid-template-columns:1fr 1fr} }
+    .note{font-size:13px;color:#bfdbfe}
+    details{border:1px solid #1f2937;border-radius:10px;padding:10px 12px;background:#0f172a;margin:8px 0}
+    details summary{cursor:pointer;font-weight:700;color:#bfdbfe}
+    .badge{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;border:1px solid #334155;background:rgba(96,165,250,.12);color:#c7d2fe;margin-left:6px}
+    footer{text-align:center;color:var(--muted);font-size:12px;padding:20px 0 28px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Glow Up – Przewodnik (Chemia • Matma • Looksmax)</h1>
+    <div class="muted">Rozwinięcie punktów do nauki i treningu. Działa offline po pierwszym otwarciu.</div>
+    <div class="topActions">
+      <a class="btn" href="./">← Powrót do aplikacji</a>
+      <a class="btn ghost" href="#chemia">Chemia</a>
+      <a class="btn ghost" href="#matma">Matma</a>
+      <a class="btn ghost" href="#looksmax">Trening looksmax</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="toc">
+      <a class="chip" href="#chemia">Chemia: priorytety i schematy</a>
+      <a class="chip" href="#matma">Matma: jak się uczyć skutecznie</a>
+      <a class="chip" href="#looksmax">Looksmax: plan domowy (45–60 min)</a>
+    </div>
+
+    <section id="chemia">
+      <h2>Chemia – na czym się skupić i jak liczyć</h2>
+
+      <div class="card">
+        <h3>Priorytety (matura) <span class="badge">must‑have</span></h3>
+        <ul>
+          <li>Atom i układ okresowy: konfiguracje elektronowe, trendy (↗ energia jonizacji, elektroujemność; ↘ promień) – wnioski o <b>typie wiązania</b> i reaktywności.</li>
+          <li>Wiązania i struktury: jonowe/kowalencyjne/metaliczne, <b>polaryzacja</b>, kształty (VSEPR), <b>oddziaływania międzycząsteczkowe</b> (H‑bond, dipol‑dipol, LD).</li>
+          <li><b>Stechiometria</b>: bilans równań, <code>n=m/M</code>, <code>c=n/V</code>, rozcieńczanie <code>M1V1=M2V2</code>, gazy <code>pV=nRT</code>.</li>
+          <li><b>Redoks</b>: stopnie utlenienia, metoda jonowo‑elektronowa (kwasowe/zasadowe środowisko), rozpoznawanie utleniacza/reduktora.</li>
+          <li>Kwasy i zasady: mocne vs słabe, <code>pH</code>, <code>K_a</code>/<code>K_b</code>, hydroliza, miareczkowanie.</li>
+          <li>Równowagi: <code>K_c</code>, efekt wspólnego jonu, rozpuszczalność (<code>K_sp</code>).</li>
+          <li>Organiczna (minimum): nazewnictwo i <b>reakcje typowe</b> – węglowodory (Add/Sub/Elim), alkohole, kwasy/estery, polimery.</li>
+        </ul>
+        <div class="note">Jeśli masz mało czasu: 1) stechiometria, 2) redoks, 3) kwasy/zasady. To daje najwięcej punktów za obliczeniówkę.</div>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Stechiometria – schemat liczenia</h3>
+          <ol>
+            <li><b>Zbilansuj</b> równanie.</li>
+            <li>Wypisz dane i <b>zamień na mole</b> (<code>n=m/M</code>, <code>n=c·V</code>, gazy <code>n=pV/RT</code>).</li>
+            <li><b>Ustal ogranicznik</b> (porównaj stosunki molowe).</li>
+            <li>Przelicz mol→masa/objętość produktu (stosunki z równania).</li>
+            <li><b>Jednostki</b> i zapis wyniku z sensowną liczbą cyfr.</li>
+          </ol>
+          <details><summary>Pułapki</summary>
+            <ul>
+              <li>Złe jednostki objętości (dm³ vs cm³).</li>
+              <li>Brak bilansu → złe stosunki molowe.</li>
+              <li>Pominięcie wydajności reakcji (gdy podana).</li>
+            </ul>
+          </details>
+        </div>
+
+        <div class="card">
+          <h3>Redoks – szybki workflow</h3>
+          <ol>
+            <li>Wyznacz <b>stopnie utlenienia</b> (SO).</li>
+            <li>Znajdź co się utlenia/redukuje → napisz <b>półreakcje</b>.</li>
+            <li>Uzupełnij O/H (H<sub>2</sub>O, H<sup>+</sup>/OH<sup>−</sup> zależnie od środowiska).</li>
+            <li>Zrównaj elektrony, dodaj półreakcje, zredukuj wspólne cząstki.</li>
+            <li>Sprawdź ładunek i atomy po obu stronach.</li>
+          </ol>
+          <details><summary>Wskazówki</summary>
+            <ul>
+              <li>Środowisko kwasowe: używaj H<sup>+</sup>; zasadowe: OH<sup>−</sup> i zneutralizuj H<sup>+</sup> → H<sub>2</sub>O.</li>
+              <li>Typowe utleniacze: KMnO<sub>4</sub>, K<sub>2</sub>Cr<sub>2</sub>O<sub>7</sub>, H<sub>2</sub>O<sub>2</sub>.</li>
+            </ul>
+          </details>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Kwasy/zasady i pH</h3>
+        <ul>
+          <li>Mocne kwasy/zasady: <b>pH z prostego wzoru</b> (dysocjacja pełna).</li>
+          <li>Słabe: użyj <code>K_a</code>/<code>K_b</code> (przybliżenie <code>x ≪ c</code> często ok).</li>
+          <li>Rozcieńczanie/mieszanie: policz mol H<sup>+</sup>/OH<sup>−</sup> → nowa objętość → pH.</li>
+          <li>Miareczkowanie: identyfikuj <b>punkt równoważnikowy</b>, policz nadmiar.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Organiczna – minimum do ogarnięcia</h3>
+        <ul>
+          <li>Nazewnictwo i izomeria (łańcuch, położeniowa, geometryczna).</li>
+          <li>Reakcje: addycja (alkeny/alkiny), substytucja (halogenki/areny), eliminacja, estryfikacja, utlenianie alkoholi (Iº → aldehyd/kwas; IIº → keton).</li>
+          <li>Polimery: rodzaje i monomer → polimer (np. polietylen, poliamidy).</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="matma">
+      <h2>Matematyka – jak się uczyć, żeby wchodziło</h2>
+
+      <div class="card">
+        <h3>Codzienny rytm</h3>
+        <ul>
+          <li><b>5 zadań dziennie</b> z jednego mini‑tematu (15–30 min). Gdy czas siada → <b>zasada 1:3</b> (zrób choć 10 min).</li>
+          <li>Tryb: 1) spróbuj samemu, 2) podejrzyj <i>tylko</i> wskazówkę, 3) dokończ sam i <b>zapisz błąd</b> (dlaczego powstał).</li>
+          <li>Co tydzień 1 mini‑sprawdzian z wcześniejszych tematów (10–15 min, bez podglądu rozwiązań).</li>
+        </ul>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Priorytety tematów (podstawa → rozszerzenie)</h3>
+          <ul>
+            <li><b>Funkcje</b>: wykres, własności, przekształcenia, równania/układy.</li>
+            <li><b>Równania i nierówności</b>: kwadratowe, wymierne, wartości bezwzględne, logarytmy/wykładnicze.</li>
+            <li><b>Geometria</b>: planimetria (trójkąty, okręgi), stereometria (bryły, przekroje).</li>
+            <li><b>Trygonometria</b>: tożsamości, równania, kąty w trójkątach.</li>
+            <li><b>Ciągi</b> (aryt./geom.), <b>kombinatoryka i prawdopodobieństwo</b>.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Technika rozwiązywania</h3>
+          <ul>
+            <li><b>Rysuj</b> (oś liczbową, szkic wykresu, figurę) – łatwiej zobaczyć warunki.</li>
+            <li><b>Sprawdzaj</b> dziedziny i pierwiastki „ekstrasowe” (fałszywe po podniesieniu do kwadratu/logarytmy).</li>
+            <li><b>Rozbij problem</b> na przypadki zamiast forsować jeden wzór.</li>
+            <li>Ucz się <b>na głos</b> – wytłumacz krok komuś (albo kamerze) w 60 s.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Praca z arkuszami</h3>
+        <ul>
+          <li>Najpierw zadania zamknięte na czas (20–25 min) → tempo i nawyk eliminacji.</li>
+          <li>Otwarte: skup się na <b>pełnym zapisie</b> i punktach cząstkowych (nawet jeśli nie dokończysz).</li>
+          <li>Po teście: <b>analiza błędów</b> (tablica: temat → błąd → jak uniknąć).</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="looksmax">
+      <h2>Looksmax – plan domowy (45–60 min, 3–4×/tydz.)</h2>
+
+      <div class="card">
+        <h3>Cel: poszerzyć sylwetkę (plecy/barki), podkreślić klatkę i brzuch</h3>
+        <ul>
+          <li><b>Rozgrzewka 6–8 min</b>: krążenia barków, otwieranie klatki, aktywacja łopatek (scapular pull‑ups przy drążku/taśmie), lekkie przysiady.</li>
+          <li><b>Tempo</b>: kontroluj ekscentrykę (~3 s w dół), pełen zakres ruchu, <b>przerwy 60–90 s</b>.</li>
+          <li><b>Progres</b>: co tydzień +1–2 powt. w seriach, a gdy wszystkie serie „wejdą” → dodaj serię/obciążenie/zwolnij tempo.</li>
+        </ul>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Trening A (bazowy)</h3>
+          <ul>
+            <li><b>Podciągania (szeroki chwyt)</b> – 4×max</li>
+            <li><b>Pompki</b> – 4×15–20</li>
+            <li><b>Dipy między krzesłami</b> – 3×max</li>
+            <li><b>Przysiady</b> – 4×20</li>
+            <li><b>Unoszenie nóg</b> w zwisie/leżąc – 3×15–20</li>
+          </ul>
+          <details><summary>Jeśli za ciężko/za lekko</summary>
+            <ul>
+              <li>Podciąganie: gumy pomocnicze / negatywy 5×3–5 s | progres: + plecak/zwolnij tempo.</li>
+              <li>Pompki: na kolanach / przy ścianie | progres: diamentowe, pike, pseudo‑planche.</li>
+              <li>Dipy: ujemne (negatywy) / ławka | progres: ciężar/zwolnij ekscentrykę.</li>
+              <li>Przysiady: do krzesła | progres: bułgarskie 3×12/str.</li>
+              <li>Brzuch: uginanie kolan / hollow hold | progres: powolny ekscentryk, wznosy prostych nóg.</li>
+            </ul>
+          </details>
+        </div>
+
+        <div class="card">
+          <h3>Trening B (akcent barki/plecy)</h3>
+          <ul>
+            <li><b>Podciąganie nachwytem wąsko/neutral</b> – 4×max</li>
+            <li><b>Pike push‑ups</b> (barki) – 4×8–12</li>
+            <li><b>Wiosłowanie gumą/handtlem</b> – 4×12–15</li>
+            <li><b>Face pull gumą</b> – 3×15–20</li>
+            <li><b>Plank</b> – 3×40–60 s</li>
+          </ul>
+          <div class="note">Masz tylko drążek i krzesła? Zrób A przez 2–3 tygodnie, potem rotuj A/B.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Plan tygodnia (przykład)</h3>
+        <ul>
+          <li>3×/tydz.: A – wolne – B – wolne – A – wolne – wolne</li>
+          <li>4×/tydz.: A – B – wolne – A – B – wolne – wolne</li>
+        </ul>
+        <div class="note">Zasada 1:3: brak czasu? Zrób 10–15 min „core” (podciągania + pompki + brzuch) i licz jako 1/3.</div>
+      </div>
+
+      <div class="card">
+        <h3>Technika – szybkie wskazówki</h3>
+        <ul>
+          <li>Łopatki: „kieszenie tylne” (ściągnij i w dół) przy podciąganiu i wiosłowaniu.</li>
+          <li>Pompki/dipy: łokcie ~30–45° od tułowia, ciało w linii, pełna głębokość bez „sprężynowania”.</li>
+          <li>Brzuch: nie kołysz nogami – <b>kontrola</b> i miednica w lekkim tyłopochyleniu.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a href="./">← Wróć do aplikacji</a> • Glow Up – przewodnik • v1
+  </footer>
+
+  <script>
+    // Rejestracja SW: strona będzie działać offline po pierwszym otwarciu
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js').catch(console.error);
+      });
+    }
+  </script>
+</body>
+  </html>
